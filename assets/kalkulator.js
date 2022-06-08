@@ -41,22 +41,31 @@ function handleOperator(operator) {
   }
 }
 
-function resultCalculation() {
+function performCalculation() {
   if (calculator.firstNumber == null || calculator.operator == null) {
-    alert("Operator belum diisi");
+    alert("Anda belum menetapkan operator");
     return;
   }
 
-  let hasil = 0;
+  let result = 0;
   if (calculator.operator === "+") {
-    hasil =
+    result =
       parseInt(calculator.firstNumber) + parseInt(calculator.displayNumber);
-  } else if (calculator.operator === "-") {
-    hasil =
+  } else {
+    result =
       parseInt(calculator.firstNumber) - parseInt(calculator.displayNumber);
   }
 
-  calculator.displayNumber = hasil;
+  // objek yang akan dikirimkan sebagai argumen fungsi putHistory()
+  const history = {
+    firstNumber: calculator.firstNumber,
+    secondNumber: calculator.displayNumber,
+    operator: calculator.operator,
+    result: result,
+  };
+  putHistory(history);
+  calculator.displayNumber = result;
+  renderHistory();
 }
 
 const buttons = document.querySelectorAll(".button");
@@ -77,7 +86,7 @@ for (let button of buttons) {
     }
 
     if (target.classList.contains("equals")) {
-      resultCalculation();
+      performCalculation();
       updateDisplay();
       return;
     }
